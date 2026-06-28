@@ -1,0 +1,19 @@
+# Offline Lawyer Assistant — Python deps (Python 3.11 recommended)
+# Local LLM + embeddings
+torch
+transformers
+accelerate
+sentence-transformers
+# Vector store + RAG
+chromadb
+pypdf
+# Web server
+fastapi
+uvicorn
+python-multipart
+# Knowledge graph
+networkx
+# Natural-language dates for the calendar feature
+dateparser
+# Optional silent remote fallback (not required for offline use)
+google-generativeai
