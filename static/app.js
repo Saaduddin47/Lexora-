@@ -39,12 +39,22 @@ $('#newChatBtn').onclick=async()=>{
 };
 
 /* ---------------- clients ---------------- */
+const AVATAR_COLORS=['#c8a24a','#4f8cff','#10a37f','#a371f7','#e5685e','#e0a93b','#db61a2','#3fb27f'];
+function initials(name){
+  const p=(name||'?').trim().split(/\s+/);
+  return ((p[0]||'')[0]||'')+((p[1]||'')[0]||'')||(name||'?')[0];
+}
+function avatarColor(seed){
+  let h=0; for(const ch of (seed||'')) h=(h*31+ch.charCodeAt(0))>>>0;
+  return AVATAR_COLORS[h%AVATAR_COLORS.length];
+}
 async function loadClients(){
   const {clients} = await api.get('/api/clients');
   const list = $('#clientList'); list.innerHTML='';
   const gen = document.createElement('div');
   gen.className='client-item'+(activeClient==='general'?' active':'');
-  gen.innerHTML='<div class="nm">💬 General workspace</div><div class="meta">No specific client</div>';
+  gen.innerHTML='<div class="ci-avatar" style="background:#3a4768;color:#fff">💬</div>'
+    +'<div class="ci-main"><div class="nm">General workspace</div><div class="meta">No specific client</div></div>';
   gen.onclick=()=>selectClient('general','General workspace');
   list.appendChild(gen);
   clients.forEach(c=>{
@@ -52,16 +62,21 @@ async function loadClients(){
     d.className='client-item'+(activeClient===c.id?' active':'');
     const st=(c.case_status||'open').replace(' ','-');
     d.innerHTML=`<button class="del-client" title="Delete client">🗑</button>
-      <div class="nm">${esc(c.name)}</div>
-      <div class="meta"><span class="badge ${st}">${esc(c.case_status)}</span> · ${esc(c.case_type)} · ${c.messages} msgs</div>`;
+      <div class="ci-avatar" style="background:${avatarColor(c.id||c.name)}">${esc(initials(c.name))}</div>
+      <div class="ci-main">
+        <div class="nm">${esc(c.name)}</div>
+        <div class="meta"><span class="badge ${st}">${esc(c.case_status)}</span> · ${esc(c.case_type)} · ${c.messages} msgs</div>
+      </div>`;
     d.onclick=()=>selectClient(c.id,c.name);
     d.querySelector('.del-client').onclick=ev=>{ ev.stopPropagation(); deleteClient(c.id,c.name); };
     list.appendChild(d);
   });
+  applyClientFilter();
 }
 async function deleteClient(id,name){
   if(!confirm(`Delete client "${name}" and all of their chat, statements, documents and knowledge graph?\n\nThis cannot be undone.`)) return;
   await api.del('/api/clients/'+id);
+  toast(`Deleted client “${name}”`,'info');
   if(activeClient===id) selectClient('general','General workspace');
   else await loadClients();
 }
@@ -152,9 +167,10 @@ async function uploadPdf(file,fromChat){
   if(fromChat) hint.textContent=`Indexing ${file.name}…`;
   const fd=new FormData(); fd.append('file',file); fd.append('client_id',activeClient);
   const r=await (await fetch('/api/upload',{method:'POST',body:fd})).json();
-  if(r.error){ if(fromChat) hint.textContent='Upload failed: '+r.error; return; }
+  if(r.error){ if(fromChat) hint.textContent='Upload failed: '+r.error; toast('Upload failed: '+r.error,'error'); return; }
   const msg=`📄 Indexed “${r.filename}” → ${r.chunks} chunks. RAG is active — ask me about it.`;
   if(fromChat){ hint.textContent=''; document.getElementById('view-chat').classList.remove('empty'); addMsg('assistant',msg); }
+  toast(`Indexed “${r.filename}” · ${r.chunks} chunks`,'ok');
   loadDocs();
 }
 async function loadDocs(){
@@ -174,8 +190,8 @@ dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');uploadPdf(e.dataTransfer.files[0],false);});
 
 /* ---------------- knowledge graph (dependency-free canvas renderer) ---------------- */
-const NODE_COLORS={client:'#10a37f',person:'#1f6feb',place:'#e3a008',date:'#a371f7',
-  event:'#e5534b',organization:'#3fb950',object:'#8b949e',claim:'#db61a2',entity:'#8b949e'};
+const NODE_COLORS={client:'#c8a24a',person:'#4f8cff',place:'#e0a93b',date:'#a371f7',
+  event:'#e5685e',organization:'#10a37f',object:'#8b94a7',claim:'#db61a2',entity:'#8b94a7'};
 let graphRAF=null;          // active animation frame id
 let graphCleanup=null;      // teardown for listeners
 
@@ -261,15 +277,15 @@ function renderForceGraph(host,g){
 
   function draw(){
     ctx.clearRect(0,0,W,H);
-    // edges
-    ctx.lineWidth=1.2; ctx.strokeStyle='#3a4150';
-    ctx.font='10px Segoe UI, sans-serif';
+    // edges (soft brass)
+    ctx.lineWidth=1.3; ctx.strokeStyle='rgba(200,162,74,0.28)';
+    ctx.font='10px Inter, Segoe UI, sans-serif';
     edges.forEach(e=>{
       ctx.beginPath(); ctx.moveTo(e.s.x,e.s.y); ctx.lineTo(e.t.x,e.t.y); ctx.stroke();
       // arrow head
       const ang=Math.atan2(e.t.y-e.s.y,e.t.x-e.s.x);
       const ax=e.t.x-Math.cos(ang)*(e.t.r+2), ay=e.t.y-Math.sin(ang)*(e.t.r+2);
-      ctx.fillStyle='#55607a'; ctx.beginPath();
+      ctx.fillStyle='rgba(200,162,74,0.55)'; ctx.beginPath();
       ctx.moveTo(ax,ay);
       ctx.lineTo(ax-Math.cos(ang-0.4)*8,ay-Math.sin(ang-0.4)*8);
       ctx.lineTo(ax-Math.cos(ang+0.4)*8,ay-Math.sin(ang+0.4)*8);
@@ -277,25 +293,28 @@ function renderForceGraph(host,g){
       // edge label
       if(e.label){
         const mx=(e.s.x+e.t.x)/2, my=(e.s.y+e.t.y)/2;
-        ctx.fillStyle='#8b94a7'; ctx.textAlign='center';
+        ctx.fillStyle='#9aa4bd'; ctx.textAlign='center';
         ctx.fillText(e.label,mx,my-3);
       }
     });
-    // nodes
+    // nodes (with glow)
     nodes.forEach(n=>{
-      const col=NODE_COLORS[n.type]||'#8b949e';
+      const col=NODE_COLORS[n.type]||'#8b94a7';
+      ctx.save();
+      ctx.shadowColor=col; ctx.shadowBlur=n.type==='client'?22:14;
       ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
       ctx.fillStyle=col; ctx.fill();
-      ctx.lineWidth=2; ctx.strokeStyle='#0b0d10'; ctx.stroke();
-      if(n.type==='client'){ ctx.lineWidth=2; ctx.strokeStyle='#ffffff'; ctx.stroke(); }
+      ctx.restore();
+      ctx.lineWidth=2; ctx.strokeStyle='#0a0e18'; ctx.stroke();
+      if(n.type==='client'){ ctx.lineWidth=2.5; ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.stroke(); }
       // label
-      ctx.font=(n.type==='client'?'bold 13px':'12px')+' Segoe UI, sans-serif';
+      ctx.font=(n.type==='client'?'600 13px':'12px')+' Inter, Segoe UI, sans-serif';
       ctx.textAlign='center'; ctx.textBaseline='middle';
       const tw=ctx.measureText(n.label).width;
-      ctx.fillStyle='rgba(11,13,16,0.75)';
-      ctx.fillRect(n.x-tw/2-4,n.y+n.r+3,tw+8,16);
-      ctx.fillStyle='#ECECF1';
-      ctx.fillText(n.label,n.x,n.y+n.r+11);
+      ctx.fillStyle='rgba(10,14,24,0.82)';
+      ctx.fillRect(n.x-tw/2-5,n.y+n.r+3,tw+10,17);
+      ctx.fillStyle='#eef1f7';
+      ctx.fillText(n.label,n.x,n.y+n.r+11.5);
     });
   }
 
@@ -544,15 +563,25 @@ async function loadDash(){
      <div class="muted">${esc(a.detail||'')}</div><div class="at">${esc(a.ts)}</div></div>`).join('')
     : '<div class="muted">No activity yet.</div>';
 }
-const PALETTE=['#10a37f','#1f6feb','#e3a008','#a371f7','#e5534b','#3fb950','#db61a2'];
+const PALETTE=['#c8a24a','#4f8cff','#10a37f','#a371f7','#e5685e','#e0a93b','#db61a2'];
+function themeColors(){
+  const css=getComputedStyle(document.documentElement);
+  return {
+    text:(css.getPropertyValue('--text')||'#eef1f7').trim(),
+    muted:(css.getPropertyValue('--muted')||'#98a2bd').trim(),
+    grid:(css.getPropertyValue('--border')||'#27304a').trim(),
+    surface:(css.getPropertyValue('--surface')||'#151b2d').trim(),
+  };
+}
 function drawChart(id,type,obj,_){
   const ctx=$('#'+id); const labels=Object.keys(obj), vals=Object.values(obj);
+  const tc=themeColors();
   if(id==='statusChart'&&statusChart) statusChart.destroy();
   if(id==='typeChart'&&typeChart) typeChart.destroy();
-  const cfg={type,data:{labels,datasets:[{data:vals,backgroundColor:PALETTE,borderColor:'#0b0d10',borderWidth:2}]},
+  const cfg={type,data:{labels,datasets:[{data:vals,backgroundColor:PALETTE,borderColor:tc.surface,borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#ECECF1'},display:type==='doughnut'}},
-      scales:type==='bar'?{x:{ticks:{color:'#9aa3b2'},grid:{color:'#222'}},y:{ticks:{color:'#9aa3b2'},grid:{color:'#222'}}}:{}}};
+      plugins:{legend:{labels:{color:tc.text},display:type==='doughnut'}},
+      scales:type==='bar'?{x:{ticks:{color:tc.muted},grid:{color:tc.grid}},y:{ticks:{color:tc.muted},grid:{color:tc.grid}}}:{}}};
   const c=new Chart(ctx,cfg);
   if(id==='statusChart') statusChart=c; else typeChart=c;
 }
@@ -568,6 +597,40 @@ $('#m_save').onclick=async()=>{
   $('#m_name').value=$('#m_type').value=$('#m_summary').value=$('#m_email').value='';
   await loadClients(); selectClient(c.id,c.name);
 };
+
+/* ---------------- toasts ---------------- */
+function toast(msg,type){
+  const c=$('#toasts'); if(!c) return;
+  const t=document.createElement('div');
+  t.className='toast'+(type?' '+type:'');
+  t.textContent=msg;
+  c.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),320); },3200);
+}
+
+/* ---------------- theme toggle ---------------- */
+const THEME_KEY='lexora-theme';
+function applyTheme(t){ document.documentElement.setAttribute('data-theme', t==='light'?'light':'dark'); }
+(function(){ applyTheme(localStorage.getItem(THEME_KEY)||'dark'); })();
+$('#themeToggle').onclick=()=>{
+  const next=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  applyTheme(next); localStorage.setItem(THEME_KEY,next);
+  const tab=$('.tab.active')?.dataset.tab;
+  if(tab==='dash') loadDash();          // re-theme charts
+  if(tab==='graph') loadGraph();        // re-theme graph stage
+};
+
+/* ---------------- client search ---------------- */
+function applyClientFilter(){
+  const q=($('#clientSearch')?.value||'').toLowerCase();
+  $$('#clientList .client-item').forEach((it,i)=>{
+    if(i===0){ it.style.display=''; return; }   // keep "General workspace" visible
+    const nm=(it.querySelector('.nm')?.textContent||'').toLowerCase();
+    it.style.display=nm.includes(q)?'':'none';
+  });
+}
+$('#clientSearch').addEventListener('input',applyClientFilter);
 
 /* ---------------- init ---------------- */
 loadClients(); loadMessages();
