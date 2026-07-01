@@ -1,0 +1,1240 @@
+{
+  "clients": {
+    "c_60f6ea24": {
+      "id": "c_60f6ea24",
+      "name": "Ravi Kumar",
+      "case_type": "Criminal - Theft",
+      "case_status": "open",
+      "summary": "Accused of office theft on 12 March. Alibi under question.",
+      "email": "",
+      "created": "2026-06-25 00:08:24",
+      "tags": []
+    },
+    "c_1bcfb544": {
+      "id": "c_1bcfb544",
+      "name": "Meena Sharma",
+      "case_type": "Property Dispute",
+      "case_status": "solved",
+      "summary": "Boundary dispute over ancestral plot in Pune. Settled out of court.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_ec770ae9": {
+      "id": "c_ec770ae9",
+      "name": "Arjun Verma",
+      "case_type": "Divorce",
+      "case_status": "in-progress",
+      "summary": "Mutual-consent divorce; custody of one child and asset split pending.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_dc0da4ce": {
+      "id": "c_dc0da4ce",
+      "name": "Sunita Rao",
+      "case_type": "Financial Fraud",
+      "case_status": "unsolved",
+      "summary": "Alleged investment fraud of ₹12 lakh by a chit-fund operator.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_111bfabd": {
+      "id": "c_111bfabd",
+      "name": "Imran Khan",
+      "case_type": "Contract Breach",
+      "case_status": "closed",
+      "summary": "Vendor failed to deliver IT equipment; resolved with refund.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_a9427467": {
+      "id": "c_a9427467",
+      "name": "Aisha Kapoor",
+      "case_type": "Family - Custody",
+      "case_status": "open",
+      "summary": "Dispute over custody and school attendance across two cities.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_0351e405": {
+      "id": "c_0351e405",
+      "name": "Nikhil Rao",
+      "case_type": "Vendor Dispute",
+      "case_status": "in-progress",
+      "summary": "Supplier failure to deliver goods; unpaid invoice dispute.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_b4bb24d5": {
+      "id": "c_b4bb24d5",
+      "name": "Sara Menon",
+      "case_type": "Product Liability",
+      "case_status": "open",
+      "summary": "Alleged defective battery caused device fire; seeking damages.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_275eb599": {
+      "id": "c_275eb599",
+      "name": "Diego Alvarez",
+      "case_type": "Commercial - Contract",
+      "case_status": "in-progress",
+      "summary": "Dispute over delayed delivery and contract penalties.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_0a03ce91": {
+      "id": "c_0a03ce91",
+      "name": "Maya Iyer",
+      "case_type": "Commercial - Compliance",
+      "case_status": "open",
+      "summary": "Multi-party negotiation with specific deliverables and certificates.",
+      "email": "",
+      "created": "2026-06-25 00:08:40",
+      "tags": []
+    },
+    "c_353b5e84": {
+      "id": "c_353b5e84",
+      "name": "Dr. Kavya Nair",
+      "case_type": "Intellectual Property",
+      "case_status": "open",
+      "summary": "Provisional disclosure of an algorithm and related technical notes.",
+      "email": "",
+      "created": "2026-06-25 00:08:41",
+      "tags": []
+    },
+    "c_c216904a": {
+      "id": "c_c216904a",
+      "name": "Vikram Gupta",
+      "case_type": "Corporate Fraud & Asset Tracing",
+      "case_status": "open",
+      "summary": "Allegations of embezzlement using layered shell companies and rapid fund movements.",
+      "email": "",
+      "created": "2026-06-25 00:08:41",
+      "tags": []
+    },
+    "c_4ff97ad9": {
+      "id": "c_4ff97ad9",
+      "name": "Mass Tort Group A",
+      "case_type": "Mass Tort - Toxic Exposure",
+      "case_status": "in-progress",
+      "summary": "Multiple claimants alleging long-term exposure to Contaminant X at industrial plant.",
+      "email": "",
+      "created": "2026-06-25 00:08:41",
+      "tags": []
+    },
+    "c_37c3e407": {
+      "id": "c_37c3e407",
+      "name": "Hannah Lee",
+      "case_type": "Cross-border IP & Hosting Dispute",
+      "case_status": "open",
+      "summary": "Source-code leak and copyrighted material hosted on offshore servers; takedown and injunctive relief sought.",
+      "email": "",
+      "created": "2026-06-25 00:08:41",
+      "tags": []
+    },
+    "c_cef06b7c": {
+      "id": "c_cef06b7c",
+      "name": "Environmental Trust",
+      "case_type": "Regulatory Enforcement",
+      "case_status": "open",
+      "summary": "Alleged illegal discharge into river; requires expert hydrogeology and satellite imagery analysis.",
+      "email": "",
+      "created": "2026-06-25 00:08:41",
+      "tags": []
+    }
+  },
+  "messages": {
+    "c_60f6ea24": [],
+    "c_1bcfb544": [],
+    "c_ec770ae9": [],
+    "c_dc0da4ce": [],
+    "c_111bfabd": [],
+    "c_a9427467": [],
+    "c_0351e405": [],
+    "c_b4bb24d5": [],
+    "c_275eb599": [],
+    "c_0a03ce91": [],
+    "c_353b5e84": [],
+    "c_c216904a": [],
+    "c_4ff97ad9": [],
+    "c_37c3e407": [],
+    "c_cef06b7c": []
+  },
+  "statements": {
+    "c_60f6ea24": [
+      {
+        "id": "s_e324ee2a35",
+        "text": "In his first statement, Ravi said he was NOT at the office at 5 PM on 12 March.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:24",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_224093a5cf",
+        "text": "Ravi stated he was at home with his brother Anil the whole evening of 12 March.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_a4a06fcc2e",
+        "text": "CCTV log shows the server room was accessed at 5:10 PM on 12 March.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_76f6bc1bf4",
+        "text": "In his second statement, Ravi now says he WAS at the office at 5 PM on 12 March meeting manager Suresh.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": [
+          {
+            "prior_id": "s_e324ee2a35",
+            "prior_text": "In his first statement, Ravi said he was NOT at the office at 5 PM on 12 March.",
+            "reason": "The two statements give opposite accounts of the same fact — one affirms while the other denies it (presence/absence or yes/no conflict)."
+          }
+        ]
+      }
+    ],
+    "c_1bcfb544": [
+      {
+        "id": "s_8429b0cdcc",
+        "text": "Meena holds the 1998 registered sale deed for plot 47.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_6263e6273e",
+        "text": "Neighbour Patil claimed 2 feet of the eastern boundary.",
+        "speaker": "opposing",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_8a8837a364",
+        "text": "Survey by the municipal office confirmed Meena's boundary line.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_ec770ae9": [
+      {
+        "id": "s_2c00c2c296",
+        "text": "Arjun seeks joint custody of his 7-year-old daughter Kiara.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_72ceca010a",
+        "text": "Both parties agreed to split the jointly-owned flat 50-50.",
+        "speaker": "agreement",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_dc0da4ce": [
+      {
+        "id": "s_52d08c78c5",
+        "text": "Sunita invested ₹12,00,000 with operator Deepak in 2023.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_14c4736f19",
+        "text": "Deepak's company address turned out to be fake.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_111bfabd": [
+      {
+        "id": "s_77fe1f65b7",
+        "text": "Vendor TechNova missed the delivery deadline of 1 Jan 2024.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_59451646d6",
+        "text": "A full refund of ₹4,50,000 was issued after mediation.",
+        "speaker": "agreement",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_a9427467": [
+      {
+        "id": "s_f18e303fd1",
+        "text": "Aisha says her daughter was with her in Bengaluru on 12 Oct.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_e54a6e2359",
+        "text": "School attendance record shows the child in Mumbai on 12 Oct.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_0351e405": [
+      {
+        "id": "s_f8a9cdceb6",
+        "text": "Nikhil: TechSupplies delivered defective units on 01 Mar and invoice remains unpaid.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_b4bb24d5": [
+      {
+        "id": "s_1c68692029",
+        "text": "Sara: The battery supplied by TechSupplies overheated on 05 Apr.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_275eb599": [
+      {
+        "id": "s_316e33c8a5",
+        "text": "Diego: Supplier must deliver within 30 days of PO; penalty after 45 days.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_0a03ce91": [
+      {
+        "id": "s_21a66adf2b",
+        "text": "Maya: Vendor must produce compliance certificate by next Tuesday.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:40",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_353b5e84": [
+      {
+        "id": "s_8bc37267ce",
+        "text": "Kavya: Filed a provisional disclosure on 02 Feb for a two-stage encoder.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_c216904a": [
+      {
+        "id": "s_a740ea7dea",
+        "text": "Whistleblower: Funds were routed through ShellCo LLP to offshore accounts on 15 Feb.",
+        "speaker": "witness",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_1ea14d028b",
+        "text": "Accounting: Unexplained vendor payments to entities controlled by Vikram.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_4ff97ad9": [
+      {
+        "id": "s_b6cf112b70",
+        "text": "Plaintiff A: Chronic respiratory issues since 2019 after work at Plant Z.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_32fb4b6c70",
+        "text": "Plaintiff B: Hospital records show elevated exposure markers.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_37c3e407": [
+      {
+        "id": "s_05c0b9a898",
+        "text": "Hannah: Proprietary modules were copied and published on mirror.example.com on 02 Mar.",
+        "speaker": "client",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_ad3e029d3e",
+        "text": "Hosting provider logs show file uploads from an IP range associated with MirrorCo.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      }
+    ],
+    "c_cef06b7c": [
+      {
+        "id": "s_c13567591e",
+        "text": "Trust: Satellite images show discoloration downstream from Plant Y on 10 Jun.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      },
+      {
+        "id": "s_68105d3fdc",
+        "text": "Regulator: Sample tests show contaminant levels above statutory limits.",
+        "speaker": "evidence",
+        "ts": "2026-06-25 00:08:41",
+        "source": "seed",
+        "contradictions": []
+      }
+    ]
+  },
+  "graphs": {
+    "c_60f6ea24": {
+      "nodes": [
+        {
+          "id": "Ravi Kumar",
+          "label": "Ravi Kumar",
+          "type": "client"
+        },
+        {
+          "id": "Office",
+          "label": "Office",
+          "type": "place"
+        },
+        {
+          "id": "5 PM, 12 March",
+          "label": "5 PM, 12 March",
+          "type": "date"
+        },
+        {
+          "id": "Anil",
+          "label": "Anil (brother)",
+          "type": "person"
+        },
+        {
+          "id": "Suresh",
+          "label": "Suresh (manager)",
+          "type": "person"
+        },
+        {
+          "id": "Theft",
+          "label": "Office Theft",
+          "type": "event"
+        },
+        {
+          "id": "CCTV",
+          "label": "CCTV Log",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Ravi Kumar",
+          "target": "Theft",
+          "label": "accused of"
+        },
+        {
+          "source": "Theft",
+          "target": "Office",
+          "label": "occurred at"
+        },
+        {
+          "source": "Theft",
+          "target": "5 PM, 12 March",
+          "label": "at time"
+        },
+        {
+          "source": "Ravi Kumar",
+          "target": "Anil",
+          "label": "claims alibi with"
+        },
+        {
+          "source": "Ravi Kumar",
+          "target": "Suresh",
+          "label": "says met"
+        },
+        {
+          "source": "CCTV",
+          "target": "Office",
+          "label": "recorded at"
+        }
+      ]
+    },
+    "c_1bcfb544": {
+      "nodes": [
+        {
+          "id": "Meena Sharma",
+          "label": "Meena Sharma",
+          "type": "client"
+        },
+        {
+          "id": "Plot 47",
+          "label": "Plot 47, Pune",
+          "type": "place"
+        },
+        {
+          "id": "Patil",
+          "label": "Neighbour Patil",
+          "type": "person"
+        },
+        {
+          "id": "Sale Deed 1998",
+          "label": "Sale Deed 1998",
+          "type": "object"
+        },
+        {
+          "id": "Survey",
+          "label": "Municipal Survey",
+          "type": "event"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Meena Sharma",
+          "target": "Plot 47",
+          "label": "owns"
+        },
+        {
+          "source": "Meena Sharma",
+          "target": "Sale Deed 1998",
+          "label": "holds"
+        },
+        {
+          "source": "Patil",
+          "target": "Plot 47",
+          "label": "disputed"
+        },
+        {
+          "source": "Survey",
+          "target": "Plot 47",
+          "label": "confirmed"
+        }
+      ]
+    },
+    "c_ec770ae9": {
+      "nodes": [
+        {
+          "id": "Arjun Verma",
+          "label": "Arjun Verma",
+          "type": "client"
+        },
+        {
+          "id": "Priya",
+          "label": "Priya (spouse)",
+          "type": "person"
+        },
+        {
+          "id": "Kiara",
+          "label": "Kiara (daughter)",
+          "type": "person"
+        },
+        {
+          "id": "Flat",
+          "label": "Joint Flat",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Arjun Verma",
+          "target": "Priya",
+          "label": "divorcing"
+        },
+        {
+          "source": "Arjun Verma",
+          "target": "Kiara",
+          "label": "seeks custody"
+        },
+        {
+          "source": "Arjun Verma",
+          "target": "Flat",
+          "label": "co-owns"
+        }
+      ]
+    },
+    "c_dc0da4ce": {
+      "nodes": [
+        {
+          "id": "Sunita Rao",
+          "label": "Sunita Rao",
+          "type": "client"
+        },
+        {
+          "id": "Deepak",
+          "label": "Deepak (operator)",
+          "type": "person"
+        },
+        {
+          "id": "Chit Fund",
+          "label": "Chit Fund Co.",
+          "type": "organization"
+        },
+        {
+          "id": "12 Lakh",
+          "label": "₹12,00,000",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Sunita Rao",
+          "target": "Deepak",
+          "label": "invested via"
+        },
+        {
+          "source": "Deepak",
+          "target": "Chit Fund",
+          "label": "runs"
+        },
+        {
+          "source": "Sunita Rao",
+          "target": "12 Lakh",
+          "label": "lost"
+        }
+      ]
+    },
+    "c_111bfabd": {
+      "nodes": [
+        {
+          "id": "Imran Khan",
+          "label": "Imran Khan",
+          "type": "client"
+        },
+        {
+          "id": "TechNova",
+          "label": "TechNova Pvt Ltd",
+          "type": "organization"
+        },
+        {
+          "id": "Contract",
+          "label": "Supply Contract",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Imran Khan",
+          "target": "TechNova",
+          "label": "contracted"
+        },
+        {
+          "source": "TechNova",
+          "target": "Contract",
+          "label": "breached"
+        }
+      ]
+    },
+    "c_a9427467": {
+      "nodes": [
+        {
+          "id": "Aisha Kapoor",
+          "label": "Aisha Kapoor",
+          "type": "client"
+        },
+        {
+          "id": "Daughter",
+          "label": "Daughter",
+          "type": "person"
+        },
+        {
+          "id": "Bengaluru",
+          "label": "Bengaluru",
+          "type": "place"
+        },
+        {
+          "id": "Mumbai",
+          "label": "Mumbai",
+          "type": "place"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Aisha Kapoor",
+          "target": "Daughter",
+          "label": "parent of"
+        },
+        {
+          "source": "Daughter",
+          "target": "Bengaluru",
+          "label": "claimed at"
+        }
+      ]
+    },
+    "c_0351e405": {
+      "nodes": [
+        {
+          "id": "Nikhil Rao",
+          "label": "Nikhil Rao",
+          "type": "client"
+        },
+        {
+          "id": "TechSupplies",
+          "label": "TechSupplies Pvt Ltd",
+          "type": "organization"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Nikhil Rao",
+          "target": "TechSupplies",
+          "label": "claims against"
+        }
+      ]
+    },
+    "c_b4bb24d5": {
+      "nodes": [
+        {
+          "id": "Sara Menon",
+          "label": "Sara Menon",
+          "type": "client"
+        },
+        {
+          "id": "TechSupplies",
+          "label": "TechSupplies Pvt Ltd",
+          "type": "organization"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Sara Menon",
+          "target": "TechSupplies",
+          "label": "supplier"
+        }
+      ]
+    },
+    "c_275eb599": {
+      "nodes": [
+        {
+          "id": "Diego Alvarez",
+          "label": "Diego Alvarez",
+          "type": "client"
+        },
+        {
+          "id": "Supplier",
+          "label": "Supplier",
+          "type": "organization"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Diego Alvarez",
+          "target": "Supplier",
+          "label": "contract with"
+        }
+      ]
+    },
+    "c_0a03ce91": {
+      "nodes": [
+        {
+          "id": "Maya Iyer",
+          "label": "Maya Iyer",
+          "type": "client"
+        },
+        {
+          "id": "Vendor",
+          "label": "Vendor",
+          "type": "organization"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Maya Iyer",
+          "target": "Vendor",
+          "label": "negotiating with"
+        }
+      ]
+    },
+    "c_353b5e84": {
+      "nodes": [
+        {
+          "id": "Dr. Kavya Nair",
+          "label": "Dr. Kavya Nair",
+          "type": "client"
+        },
+        {
+          "id": "Algorithm",
+          "label": "Two-stage encoder",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Dr. Kavya Nair",
+          "target": "Algorithm",
+          "label": "disclosed"
+        }
+      ]
+    },
+    "c_c216904a": {
+      "nodes": [
+        {
+          "id": "Vikram Gupta",
+          "label": "Vikram Gupta",
+          "type": "client"
+        },
+        {
+          "id": "ShellCo",
+          "label": "ShellCo LLP",
+          "type": "organization"
+        },
+        {
+          "id": "OffshoreBank",
+          "label": "Offshore Bank",
+          "type": "organization"
+        },
+        {
+          "id": "Forensic",
+          "label": "Forensic Report",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Vikram Gupta",
+          "target": "ShellCo",
+          "label": "linked to"
+        },
+        {
+          "source": "ShellCo",
+          "target": "OffshoreBank",
+          "label": "transferred to"
+        },
+        {
+          "source": "Forensic",
+          "target": "ShellCo",
+          "label": "investigates"
+        }
+      ]
+    },
+    "c_4ff97ad9": {
+      "nodes": [
+        {
+          "id": "Group A",
+          "label": "Group A Plaintiffs",
+          "type": "group"
+        },
+        {
+          "id": "Plant Z",
+          "label": "Plant Z",
+          "type": "place"
+        },
+        {
+          "id": "Contaminant X",
+          "label": "Contaminant X",
+          "type": "object"
+        },
+        {
+          "id": "Manufacturer",
+          "label": "Manufacturer",
+          "type": "organization"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Group A",
+          "target": "Plant Z",
+          "label": "worked at"
+        },
+        {
+          "source": "Plant Z",
+          "target": "Contaminant X",
+          "label": "exposed to"
+        },
+        {
+          "source": "Contaminant X",
+          "target": "Manufacturer",
+          "label": "produced by"
+        }
+      ]
+    },
+    "c_37c3e407": {
+      "nodes": [
+        {
+          "id": "Hannah Lee",
+          "label": "Hannah Lee",
+          "type": "client"
+        },
+        {
+          "id": "MirrorCo",
+          "label": "MirrorCo",
+          "type": "organization"
+        },
+        {
+          "id": "MirrorHost",
+          "label": "mirror.example.com",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Hannah Lee",
+          "target": "MirrorHost",
+          "label": "copyrighted content on"
+        },
+        {
+          "source": "MirrorCo",
+          "target": "MirrorHost",
+          "label": "operates"
+        }
+      ]
+    },
+    "c_cef06b7c": {
+      "nodes": [
+        {
+          "id": "Environmental Trust",
+          "label": "Environmental Trust",
+          "type": "organization"
+        },
+        {
+          "id": "Plant Y",
+          "label": "Plant Y",
+          "type": "place"
+        },
+        {
+          "id": "Satellite",
+          "label": "Satellite Imagery",
+          "type": "object"
+        },
+        {
+          "id": "HydroReport",
+          "label": "Hydrogeology Report",
+          "type": "object"
+        }
+      ],
+      "edges": [
+        {
+          "source": "Environmental Trust",
+          "target": "Plant Y",
+          "label": "complains about"
+        },
+        {
+          "source": "Satellite",
+          "target": "Plant Y",
+          "label": "shows"
+        },
+        {
+          "source": "HydroReport",
+          "target": "Satellite",
+          "label": "corroborates"
+        }
+      ]
+    }
+  },
+  "activity": [
+    {
+      "ts": "2026-06-25 00:08:42",
+      "client_id": "c_1bcfb544",
+      "client_name": "Meena Sharma",
+      "action": "Document uploaded",
+      "detail": "property_deed_meena.pdf (1 chunks)"
+    },
+    {
+      "ts": "2026-06-25 00:08:42",
+      "client_id": "c_60f6ea24",
+      "client_name": "Ravi Kumar",
+      "action": "Document uploaded",
+      "detail": "witness_statement_ravi.pdf (2 chunks)"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_60f6ea24",
+      "client_name": "Ravi Kumar",
+      "action": "Contradiction detected",
+      "detail": "The two statements give opposite accounts of the same fact — one affirms while the other denies it (presence/absence or "
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_cef06b7c",
+      "client_name": "Environmental Trust",
+      "action": "Case seeded",
+      "detail": "Regulatory Enforcement"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_cef06b7c",
+      "client_name": "Environmental Trust",
+      "action": "Client created",
+      "detail": "Environmental Trust"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_37c3e407",
+      "client_name": "Hannah Lee",
+      "action": "Case seeded",
+      "detail": "Cross-border IP & Hosting Dispute"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_37c3e407",
+      "client_name": "Hannah Lee",
+      "action": "Client created",
+      "detail": "Hannah Lee"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_4ff97ad9",
+      "client_name": "Mass Tort Group A",
+      "action": "Case seeded",
+      "detail": "Mass Tort - Toxic Exposure"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_4ff97ad9",
+      "client_name": "Mass Tort Group A",
+      "action": "Client created",
+      "detail": "Mass Tort Group A"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_c216904a",
+      "client_name": "Vikram Gupta",
+      "action": "Case seeded",
+      "detail": "Corporate Fraud & Asset Tracing"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_c216904a",
+      "client_name": "Vikram Gupta",
+      "action": "Call recorded",
+      "detail": "3 action item(s) extracted"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_c216904a",
+      "client_name": "Vikram Gupta",
+      "action": "Client created",
+      "detail": "Vikram Gupta"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_353b5e84",
+      "client_name": "Dr. Kavya Nair",
+      "action": "Case seeded",
+      "detail": "Intellectual Property"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_353b5e84",
+      "client_name": "Dr. Kavya Nair",
+      "action": "Client created",
+      "detail": "Dr. Kavya Nair"
+    },
+    {
+      "ts": "2026-06-25 00:08:41",
+      "client_id": "c_0a03ce91",
+      "client_name": "Maya Iyer",
+      "action": "Case seeded",
+      "detail": "Commercial - Compliance"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_0a03ce91",
+      "client_name": "Maya Iyer",
+      "action": "Client created",
+      "detail": "Maya Iyer"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_275eb599",
+      "client_name": "Diego Alvarez",
+      "action": "Case seeded",
+      "detail": "Commercial - Contract"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_275eb599",
+      "client_name": "Diego Alvarez",
+      "action": "Client created",
+      "detail": "Diego Alvarez"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_b4bb24d5",
+      "client_name": "Sara Menon",
+      "action": "Case seeded",
+      "detail": "Product Liability"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_b4bb24d5",
+      "client_name": "Sara Menon",
+      "action": "Client created",
+      "detail": "Sara Menon"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_0351e405",
+      "client_name": "Nikhil Rao",
+      "action": "Case seeded",
+      "detail": "Vendor Dispute"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_0351e405",
+      "client_name": "Nikhil Rao",
+      "action": "Client created",
+      "detail": "Nikhil Rao"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_a9427467",
+      "client_name": "Aisha Kapoor",
+      "action": "Case seeded",
+      "detail": "Family - Custody"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_a9427467",
+      "client_name": "Aisha Kapoor",
+      "action": "Client created",
+      "detail": "Aisha Kapoor"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_111bfabd",
+      "client_name": "Imran Khan",
+      "action": "Case seeded",
+      "detail": "Contract Breach"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_111bfabd",
+      "client_name": "Imran Khan",
+      "action": "Client created",
+      "detail": "Imran Khan"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_dc0da4ce",
+      "client_name": "Sunita Rao",
+      "action": "Case seeded",
+      "detail": "Financial Fraud"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_dc0da4ce",
+      "client_name": "Sunita Rao",
+      "action": "Client created",
+      "detail": "Sunita Rao"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_ec770ae9",
+      "client_name": "Arjun Verma",
+      "action": "Case seeded",
+      "detail": "Divorce"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_ec770ae9",
+      "client_name": "Arjun Verma",
+      "action": "Client created",
+      "detail": "Arjun Verma"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_1bcfb544",
+      "client_name": "Meena Sharma",
+      "action": "Case seeded",
+      "detail": "Property Dispute"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_1bcfb544",
+      "client_name": "Meena Sharma",
+      "action": "Client created",
+      "detail": "Meena Sharma"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_60f6ea24",
+      "client_name": "Ravi Kumar",
+      "action": "Case seeded",
+      "detail": "Criminal - Theft"
+    },
+    {
+      "ts": "2026-06-25 00:08:40",
+      "client_id": "c_60f6ea24",
+      "client_name": "Ravi Kumar",
+      "action": "Call recorded",
+      "detail": "4 action item(s) extracted"
+    },
+    {
+      "ts": "2026-06-25 00:08:24",
+      "client_id": "c_60f6ea24",
+      "client_name": "Ravi Kumar",
+      "action": "Client created",
+      "detail": "Ravi Kumar"
+    }
+  ],
+  "calls": {
+    "c_60f6ea24": [
+      {
+        "ts": "2026-06-25 00:08:40",
+        "transcript": "Lawyer: Ravi, where were you at 5 PM on the 12th?\nClient: I told you, I was at home with Anil.\nLawyer: But you mentioned meeting Suresh at the office earlier.\nClient: Yes, maybe I came in briefly around five.\nLawyer: That changes the alibi. We need to be consistent.",
+        "summary": "Discussed Ravi's whereabouts on 12 March. Ravi gave conflicting accounts — first home with brother Anil, then admitted being at the office around 5 PM meeting Suresh. Alibi needs reconciliation before the next hearing.",
+        "action_items": [
+          "Obtain CCTV footage timestamp from building security",
+          "Get written statement from brother Anil",
+          "Confirm meeting with manager Suresh",
+          "Reconcile the conflicting 5 PM accounts"
+        ]
+      }
+    ],
+    "c_c216904a": [
+      {
+        "ts": "2026-06-25 00:08:41",
+        "transcript": "Forensic Analyst: We saw rapid transfers on 15-16 Feb into multiple jurisdictions.\nLawyer: Can you provide a trace?\nAnalyst: Yes, we have SWIFT chain logs and beneficiary names.",
+        "summary": "Forensic analyst briefing on money-movement chain; potential freezing actions recommended.",
+        "action_items": [
+          "Request SWIFT extracts from bank",
+          "File provisional asset-freeze motion",
+          "Serve discovery on ShellCo"
+        ]
+      }
+    ]
+  },
+  "events": []
+}
