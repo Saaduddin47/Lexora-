@@ -190,7 +190,7 @@ GRAPH_SYS = (
 )
 
 
-def extract_graph(client_id, text):
+def extract_graph(client_id, text, source="chat"):
     """Use the LLM to pull entities/relations and merge into the client graph."""
     client = get_client(client_id)
     cname = client["name"] if client else "Client"
@@ -199,7 +199,7 @@ def extract_graph(client_id, text):
         system=GRAPH_SYS, max_new_tokens=300, temperature=0.1) or {}
     ents = data.get("entities", []) if isinstance(data, dict) else []
     rels = data.get("relations", []) if isinstance(data, dict) else []
-    added = _merge_graph(client_id, cname, ents, rels)
+    added = _merge_graph(client_id, cname, ents, rels, source_text=text, source=source)
     if added:
         log_activity(client_id, "Knowledge graph updated",
                      f"+{added['nodes']} nodes, +{added['edges']} edges")
@@ -229,32 +229,67 @@ def _clean_name(name):
     return name
 
 
-def _merge_graph(client_id, cname, ents, rels):
+_MENTION_CAP = 5
+_EVIDENCE_CAP = 5
+
+
+def _add_mention(node, source_text, source, ts):
+    """Record a capped provenance mention on a node (skipped for the synthetic client node)."""
+    if node.get("type") == "client" or not source_text:
+        return
+    mentions = node.setdefault("mentions", [])
+    mentions.append({"text": str(source_text).strip()[:160], "ts": ts, "source": source or "chat"})
+    del mentions[:-_MENTION_CAP]
+    node["count"] = len(mentions)
+
+
+def _add_evidence(edge, source_text, source, ts):
+    """Record capped provenance evidence on an edge (skipped for synthetic 'mentioned' edges)."""
+    if not source_text:
+        return
+    evidence = edge.setdefault("evidence", [])
+    evidence.append({"text": str(source_text).strip()[:160], "ts": ts, "source": source or "chat"})
+    del evidence[:-_EVIDENCE_CAP]
+
+
+def _merge_graph(client_id, cname, ents, rels, source_text=None, source=None, ts=None):
+    ts = ts or _now()
     with _lock:
         s = _load()
         g = s["graphs"].setdefault(client_id, {"nodes": [], "edges": []})
-        node_ids = {n["id"].lower() for n in g["nodes"]}
-        if cname.lower() not in node_ids:
-            g["nodes"].append({"id": cname, "label": cname, "type": "client"})
-            node_ids.add(cname.lower())
+        by_id = {n["id"].lower(): n for n in g["nodes"]}
+        if cname.lower() not in by_id:
+            cnode = {"id": cname, "label": cname, "type": "client"}
+            g["nodes"].append(cnode)
+            by_id[cname.lower()] = cnode
+
         new_n = new_e = 0
         for e in ents:
             if not isinstance(e, dict):
                 continue
             name = _clean_name(e.get("name", ""))
-            if not name or name.lower() in node_ids:
+            if not name:
                 continue
-            g["nodes"].append({"id": name, "label": name,
-                               "type": str(e.get("type", "entity")).lower()})
-            node_ids.add(name.lower())
-            new_n += 1
-        edge_keys = {(x["source"].lower(), x["target"].lower(), x.get("label", "").lower())
+            key = name.lower()
+            node = by_id.get(key)
+            if not node:
+                node = {"id": name, "label": name, "type": str(e.get("type", "entity")).lower()}
+                g["nodes"].append(node)
+                by_id[key] = node
+                new_n += 1
+            _add_mention(node, source_text, source, ts)
+
+        edge_index = {(x["source"].lower(), x["target"].lower(), x.get("label", "").lower()): x
                      for x in g["edges"]}
 
         def ensure_node(nm):
-            if nm.lower() not in node_ids:
-                g["nodes"].append({"id": nm, "label": nm, "type": "entity"})
-                node_ids.add(nm.lower())
+            key = nm.lower()
+            node = by_id.get(key)
+            if not node:
+                node = {"id": nm, "label": nm, "type": "entity"}
+                g["nodes"].append(node)
+                by_id[key] = node
+            return node
 
         for r in rels:
             if not isinstance(r, dict):
@@ -263,14 +298,17 @@ def _merge_graph(client_id, cname, ents, rels):
             lbl = str(r.get("relation", "related")).strip()[:40]
             if not a or not b:
                 continue
-            ensure_node(a)
-            ensure_node(b)
+            na, nb = ensure_node(a), ensure_node(b)
+            _add_mention(na, source_text, source, ts)
+            _add_mention(nb, source_text, source, ts)
             key = (a.lower(), b.lower(), lbl.lower())
-            if key in edge_keys:
-                continue
-            g["edges"].append({"source": a, "target": b, "label": lbl})
-            edge_keys.add(key)
-            new_e += 1
+            edge = edge_index.get(key)
+            if not edge:
+                edge = {"source": a, "target": b, "label": lbl}
+                g["edges"].append(edge)
+                edge_index[key] = edge
+                new_e += 1
+            _add_evidence(edge, source_text, source, ts)
         # connect orphan top-level entities to the client for a coherent graph
         connected = set()
         for x in g["edges"]:
@@ -428,7 +466,8 @@ def add_event(title, start_dt, end_dt, when, client_id=None, source="chat"):
             _merge_graph(client_id, name or "Client",
                          [{"name": title, "type": "event"},
                           {"name": when, "type": "date"}],
-                         [{"from": title, "to": when, "relation": "scheduled for"}])
+                         [{"from": title, "to": when, "relation": "scheduled for"}],
+                         source_text=f"Scheduled: {title} on {when}.", source="calendar")
         except Exception:  # noqa: BLE001
             pass
     return rec
@@ -446,7 +485,9 @@ def record_email(client_id, client_name, to_addr):
         _merge_graph(client_id, client_name,
                      [{"name": "Case summary email", "type": "event"},
                       {"name": to_addr, "type": "object"}],
-                     [{"from": "Case summary email", "to": to_addr, "relation": "sent to"}])
+                     [{"from": "Case summary email", "to": to_addr, "relation": "sent to"}],
+                     source_text=f"Case-summary email sent to {client_name} ({to_addr}) on {when}.",
+                     source="email")
     except Exception:  # noqa: BLE001
         pass
 

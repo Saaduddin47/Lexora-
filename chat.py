@@ -221,7 +221,7 @@ def respond(client_id, message):
     # update knowledge graph from this turn
     if is_client and _is_factual(message):
         try:
-            memory.extract_graph(client_id, message)
+            memory.extract_graph(client_id, message, source="chat")
         except Exception as e:  # noqa: BLE001
             print(f"[chat] graph extract failed: {e}")
 
@@ -300,7 +300,7 @@ def process_call(client_id, transcript):
         except Exception:  # noqa: BLE001
             pass
         try:
-            memory.extract_graph(client_id, transcript[:1500])
+            memory.extract_graph(client_id, transcript[:1500], source="voice_call")
         except Exception:  # noqa: BLE001
             pass
 
@@ -366,7 +366,7 @@ def _commit_utterance(client_id, text, speaker):
     except Exception:  # noqa: BLE001
         pass
     try:
-        memory.extract_graph(client_id, text)
+        memory.extract_graph(client_id, text, source="live_call")
     except Exception as e:  # noqa: BLE001
         print(f"[live] graph extract failed: {e}")
     return contradictions
