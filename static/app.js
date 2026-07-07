@@ -192,23 +192,31 @@ dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');up
 /* ---------------- knowledge graph (dependency-free canvas renderer) ---------------- */
 const NODE_COLORS={client:'#c8a24a',person:'#4f8cff',place:'#e0a93b',date:'#a371f7',
   event:'#e5685e',organization:'#10a37f',object:'#8b94a7',claim:'#db61a2',entity:'#8b94a7'};
+const TYPE_LABELS={client:'Client',person:'Person',place:'Place',date:'Date',event:'Event',
+  organization:'Organization',object:'Object',claim:'Claim',entity:'Entity'};
+const SOURCE_LABELS={chat:'💬 Chat',voice_call:'📞 Voice call',live_call:'📱 Live call',
+  calendar:'📅 Calendar',email:'📧 Email'};
 let graphRAF=null;          // active animation frame id
 let graphCleanup=null;      // teardown for listeners
+let graphApi=null;          // control surface exposed by the current render (filters/search/fit)
 
 async function loadGraph(){
   const host=$('#graph');
   $('#graphClient').textContent = activeClient==='general'?'— select a client':('· '+activeClientName);
   if(graphRAF){ cancelAnimationFrame(graphRAF); graphRAF=null; }
   if(graphCleanup){ graphCleanup(); graphCleanup=null; }
-  if(activeClient==='general'){ host.innerHTML='<div style="padding:30px;color:#9aa3b2">Select a client (left sidebar) to see their evolving knowledge graph.</div>'; return; }
+  graphApi=null;
+  $('#graphStats').textContent='';
+  renderGraphPanel(null);
+  if(activeClient==='general'){ host.innerHTML='<div style="padding:30px;color:var(--muted)">Select a client (left sidebar) to see their evolving knowledge graph.</div>'; return; }
   let g;
   try { g=await api.get(`/api/clients/${activeClient}/graph`); }
-  catch(e){ host.innerHTML='<div style="padding:30px;color:#e5534b">Could not load graph: '+e+'</div>'; return; }
+  catch(e){ host.innerHTML='<div style="padding:30px;color:var(--danger)">Could not load graph: '+e+'</div>'; return; }
   if(!g || !g.nodes || !g.nodes.length){
-    host.innerHTML='<div style="padding:30px;color:#9aa3b2">No knowledge yet for this client. Chat about the case and the graph will build automatically.</div>';
+    host.innerHTML='<div style="padding:30px;color:var(--muted)">No knowledge yet for this client. Chat about the case and the graph will build automatically.</div>';
     return;
   }
-  renderForceGraph(host,g);
+  graphApi=renderForceGraph(host,g);
 }
 
 function renderForceGraph(host,g){
@@ -227,18 +235,45 @@ function renderForceGraph(host,g){
   }
   resize();
 
-  // build node/edge model with positions spread around the centre
+  // ---- connection count per node (drives sizing) ----
+  const degree={};
+  g.edges.forEach(e=>{ degree[e.source]=(degree[e.source]||0)+1; degree[e.target]=(degree[e.target]||0)+1; });
+
+  // ---- build node/edge model with positions spread around the centre ----
   const idx={};
   const nodes=g.nodes.map((n,i)=>{
     const a=(i/g.nodes.length)*Math.PI*2;
-    const o={id:n.id,label:n.label||n.id,type:n.type||'entity',
+    const deg=degree[n.id]||0;
+    const base=(n.type==='client')?22:12;
+    const o={id:n.id,label:n.label||n.id,type:n.type||'entity',degree:deg,raw:n,
       x:W/2+Math.cos(a)*Math.min(W,H)*0.28+(i%2?12:-12),
-      y:H/2+Math.sin(a)*Math.min(W,H)*0.28,vx:0,vy:0,fixed:false};
+      y:H/2+Math.sin(a)*Math.min(W,H)*0.28,vx:0,vy:0,fixed:false,
+      r:Math.min(base+deg*1.6,(n.type==='client')?34:26)};
     idx[n.id]=o; return o;
   });
   const edges=g.edges.filter(e=>idx[e.source]&&idx[e.target])
-    .map(e=>({s:idx[e.source],t:idx[e.target],label:e.label||''}));
-  nodes.forEach(n=>{ n.r=(n.type==='client')?20:13; });
+    .map(e=>({s:idx[e.source],t:idx[e.target],label:e.label||'',raw:e}));
+
+  // ---- type filters ----
+  const hiddenTypes=new Set();
+  const isHidden=n=>hiddenTypes.has(n.type);
+  const visNodes=()=>nodes.filter(n=>!isHidden(n));
+  const visEdges=()=>edges.filter(e=>!isHidden(e.s)&&!isHidden(e.t));
+
+  // ---- pan / zoom transform ----
+  const view={scale:1,ox:0,oy:0};
+  const toWorld=(sx,sy)=>({x:(sx-view.ox)/view.scale,y:(sy-view.oy)/view.scale});
+  function fit(){
+    const vn=visNodes();
+    if(!vn.length) return;
+    let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+    vn.forEach(n=>{ minX=Math.min(minX,n.x-n.r); maxX=Math.max(maxX,n.x+n.r);
+                    minY=Math.min(minY,n.y-n.r); maxY=Math.max(maxY,n.y+n.r); });
+    const w=Math.max(maxX-minX,40), h=Math.max(maxY-minY,40);
+    view.scale=Math.max(Math.min(W/(w+80),H/(h+80),1.6),0.15);
+    view.ox=W/2-(minX+w/2)*view.scale;
+    view.oy=H/2-(minY+h/2)*view.scale;
+  }
 
   let alpha=1.0;                       // simulation temperature
   const K=Math.max(70,Math.min(150,Math.sqrt(W*H/Math.max(nodes.length,1))*0.55));
@@ -269,23 +304,33 @@ function renderForceGraph(host,g){
       n.vx*=0.85; n.vy*=0.85;
       n.x+=Math.max(-30,Math.min(30,n.vx));
       n.y+=Math.max(-30,Math.min(30,n.vy));
-      n.x=Math.max(n.r+6,Math.min(W-n.r-6,n.x));
-      n.y=Math.max(n.r+6,Math.min(H-n.r-6,n.y));
     });
     if(alpha>0.03) alpha*=0.985;
   }
 
+  // ---- selection ----
+  let selected=null;
+  function neighborsOf(node){
+    const set=new Set([node.id]);
+    edges.forEach(e=>{ if(e.s.id===node.id) set.add(e.t.id); if(e.t.id===node.id) set.add(e.s.id); });
+    return set;
+  }
+
   function draw(){
     ctx.clearRect(0,0,W,H);
-    // edges (soft brass)
-    ctx.lineWidth=1.3; ctx.strokeStyle='rgba(200,162,74,0.28)';
+    ctx.save();
+    ctx.translate(view.ox,view.oy); ctx.scale(view.scale,view.scale);
+    const focus = selected?neighborsOf(selected):null;
     ctx.font='10px Inter, Segoe UI, sans-serif';
-    edges.forEach(e=>{
+    visEdges().forEach(e=>{
+      const dim = focus && !(focus.has(e.s.id)&&focus.has(e.t.id));
+      ctx.lineWidth=1.3;
+      ctx.strokeStyle= dim?'rgba(200,162,74,0.14)':'rgba(200,162,74,0.32)';
       ctx.beginPath(); ctx.moveTo(e.s.x,e.s.y); ctx.lineTo(e.t.x,e.t.y); ctx.stroke();
       // arrow head
       const ang=Math.atan2(e.t.y-e.s.y,e.t.x-e.s.x);
       const ax=e.t.x-Math.cos(ang)*(e.t.r+2), ay=e.t.y-Math.sin(ang)*(e.t.r+2);
-      ctx.fillStyle='rgba(200,162,74,0.55)'; ctx.beginPath();
+      ctx.fillStyle= dim?'rgba(200,162,74,0.25)':'rgba(200,162,74,0.6)'; ctx.beginPath();
       ctx.moveTo(ax,ay);
       ctx.lineTo(ax-Math.cos(ang-0.4)*8,ay-Math.sin(ang-0.4)*8);
       ctx.lineTo(ax-Math.cos(ang+0.4)*8,ay-Math.sin(ang+0.4)*8);
@@ -293,49 +338,229 @@ function renderForceGraph(host,g){
       // edge label
       if(e.label){
         const mx=(e.s.x+e.t.x)/2, my=(e.s.y+e.t.y)/2;
-        ctx.fillStyle='#9aa4bd'; ctx.textAlign='center';
+        ctx.fillStyle= dim?'#5b6478':'#9aa4bd'; ctx.textAlign='center';
         ctx.fillText(e.label,mx,my-3);
       }
     });
     // nodes (with glow)
-    nodes.forEach(n=>{
+    visNodes().forEach(n=>{
+      const dim = focus && !focus.has(n.id);
       const col=NODE_COLORS[n.type]||'#8b94a7';
       ctx.save();
+      ctx.globalAlpha= dim?0.3:1;
       ctx.shadowColor=col; ctx.shadowBlur=n.type==='client'?22:14;
       ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
       ctx.fillStyle=col; ctx.fill();
       ctx.restore();
+      ctx.save();
+      ctx.globalAlpha= dim?0.3:1;
       ctx.lineWidth=2; ctx.strokeStyle='#0a0e18'; ctx.stroke();
       if(n.type==='client'){ ctx.lineWidth=2.5; ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.stroke(); }
+      if(selected && n.id===selected.id){ ctx.lineWidth=3; ctx.strokeStyle='#ffffff'; ctx.stroke(); }
       // label
       ctx.font=(n.type==='client'?'600 13px':'12px')+' Inter, Segoe UI, sans-serif';
       ctx.textAlign='center'; ctx.textBaseline='middle';
       const tw=ctx.measureText(n.label).width;
       ctx.fillStyle='rgba(10,14,24,0.82)';
       ctx.fillRect(n.x-tw/2-5,n.y+n.r+3,tw+10,17);
-      ctx.fillStyle='#eef1f7';
+      ctx.fillStyle= dim?'#7d879c':'#eef1f7';
       ctx.fillText(n.label,n.x,n.y+n.r+11.5);
+      ctx.restore();
     });
+    ctx.restore();
   }
 
   function frame(){ step(); draw(); graphRAF=requestAnimationFrame(frame); }
-  frame();
+  fit(); frame();
 
-  // --- interaction: drag nodes ---
-  let drag=null;
+  // ---- interaction: drag nodes, pan background, zoom, hover, select ----
+  let drag=null, panStart=null, downPos=null, moved=false;
   function pos(ev){ const r=canvas.getBoundingClientRect(); return {x:ev.clientX-r.left,y:ev.clientY-r.top}; }
-  function pick(p){ return nodes.find(n=>{const dx=n.x-p.x,dy=n.y-p.y;return dx*dx+dy*dy<=(n.r+4)*(n.r+4);}); }
-  function onDown(ev){ const n=pick(pos(ev)); if(n){ drag=n; n.fixed=true; alpha=Math.max(alpha,0.5); canvas.style.cursor='grabbing'; } }
-  function onMove(ev){ if(drag){ const p=pos(ev); drag.x=p.x; drag.y=p.y; alpha=Math.max(alpha,0.3); } }
-  function onUp(){ if(drag){ drag.fixed=false; drag=null; canvas.style.cursor='grab'; } }
+  function pickNode(pw){ return visNodes().find(n=>{const dx=n.x-pw.x,dy=n.y-pw.y;return dx*dx+dy*dy<=(n.r+4)*(n.r+4);}); }
+  function distToSeg(p,a,b){
+    const dx=b.x-a.x, dy=b.y-a.y, len2=dx*dx+dy*dy||0.0001;
+    let t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/len2));
+    return Math.hypot(p.x-(a.x+t*dx), p.y-(a.y+t*dy));
+  }
+  function pickEdge(pw){
+    const thresh=6/view.scale; let best=null,bestD=thresh;
+    visEdges().forEach(e=>{ const d=distToSeg(pw,e.s,e.t); if(d<bestD){ bestD=d; best=e; } });
+    return best;
+  }
+  function showTooltip(html,p){
+    const tip=$('#graphTooltip'); if(!tip) return;
+    tip.innerHTML=html;
+    tip.style.left=Math.min(p.x+14,W-190)+'px';
+    tip.style.top=Math.max(p.y-10,4)+'px';
+    tip.classList.remove('hidden');
+  }
+  function hideTooltip(){ const tip=$('#graphTooltip'); if(tip) tip.classList.add('hidden'); }
+  function select(node){
+    selected=node;
+    if(node) node.fixed=false;
+    renderGraphPanel(node,edges);
+  }
+  function focusById(id){
+    const n=nodes.find(x=>x.id===id); if(!n) return;
+    select(n);
+    view.ox=W/2-n.x*view.scale; view.oy=H/2-n.y*view.scale;
+  }
+  function focusByLabel(q){
+    if(!q) return;
+    const low=q.toLowerCase();
+    const n=visNodes().find(x=>x.label.toLowerCase().includes(low));
+    if(n) focusById(n.id);
+  }
+
+  function onDown(ev){
+    const p=pos(ev); downPos=p; moved=false;
+    const n=pickNode(toWorld(p.x,p.y));
+    if(n){ drag=n; n.fixed=true; alpha=Math.max(alpha,0.5); canvas.style.cursor='grabbing'; }
+    else { panStart={x:p.x,y:p.y,ox:view.ox,oy:view.oy}; canvas.style.cursor='grabbing'; }
+  }
+  function onMove(ev){
+    const p=pos(ev);
+    if(downPos && (Math.abs(p.x-downPos.x)>4||Math.abs(p.y-downPos.y)>4)) moved=true;
+    if(drag){
+      const w=toWorld(p.x,p.y); drag.x=w.x; drag.y=w.y; alpha=Math.max(alpha,0.3);
+    } else if(panStart){
+      view.ox=panStart.ox+(p.x-panStart.x); view.oy=panStart.oy+(p.y-panStart.y);
+    } else {
+      const w=toWorld(p.x,p.y);
+      const n=pickNode(w);
+      if(n){
+        canvas.style.cursor='pointer';
+        showTooltip(`<b>${esc(n.label)}</b><span class="gt-type">${esc(TYPE_LABELS[n.type]||n.type)}</span><span class="gt-deg">${n.degree} connection${n.degree===1?'':'s'}</span>`,p);
+      } else {
+        const e=pickEdge(w);
+        if(e){ canvas.style.cursor='pointer'; showTooltip(`<b>${esc(e.s.label)} → ${esc(e.t.label)}</b><span class="gt-type">${esc(e.label||'related')}</span>`,p); }
+        else { canvas.style.cursor='grab'; hideTooltip(); }
+      }
+    }
+  }
+  function onUp(ev){
+    const p=pos(ev);
+    if(drag){ drag.fixed=false; drag=null; }
+    else if(!moved){
+      const n=pickNode(toWorld(p.x,p.y));
+      select(n||null);
+    }
+    panStart=null; downPos=null; moved=false;
+    canvas.style.cursor='grab';
+  }
+  function onWheel(ev){
+    ev.preventDefault();
+    const p=pos(ev), before=toWorld(p.x,p.y);
+    view.scale=Math.max(0.15,Math.min(3.2,view.scale*(ev.deltaY<0?1.12:0.89)));
+    view.ox=p.x-before.x*view.scale; view.oy=p.y-before.y*view.scale;
+  }
   canvas.addEventListener('mousedown',onDown);
   window.addEventListener('mousemove',onMove);
   window.addEventListener('mouseup',onUp);
+  canvas.addEventListener('wheel',onWheel,{passive:false});
+  canvas.addEventListener('mouseleave',hideTooltip);
   const ro=new ResizeObserver(()=>{ resize(); alpha=Math.max(alpha,0.2); });
   ro.observe(host);
 
-  graphCleanup=()=>{ window.removeEventListener('mousemove',onMove); window.removeEventListener('mouseup',onUp); ro.disconnect(); };
+  graphCleanup=()=>{
+    window.removeEventListener('mousemove',onMove);
+    window.removeEventListener('mouseup',onUp);
+    ro.disconnect();
+    hideTooltip();
+  };
+
+  // ---- toolbar control surface (filters / search / fit) ----
+  function setHidden(type,hide){
+    if(hide) hiddenTypes.add(type); else hiddenTypes.delete(type);
+    if(hide && selected && selected.type===type) select(null);
+    updateStats();
+  }
+  function updateStats(){
+    const counts={};
+    nodes.forEach(n=>{ counts[n.type]=(counts[n.type]||0)+1; });
+    const parts=Object.keys(counts).sort().map(t=>`${counts[t]} ${(TYPE_LABELS[t]||t).toLowerCase()}${counts[t]===1?'':'s'}`);
+    const stats=$('#graphStats');
+    if(stats) stats.textContent=`${nodes.length} entities · ${edges.length} relations`+(parts.length?' · '+parts.join(' · '):'');
+  }
+  updateStats();
+
+  return {setHidden, focusByLabel, focusById, fit};
 }
+
+/* ---------------- knowledge graph: details side panel ---------------- */
+function renderGraphPanel(node, edges){
+  const panel=$('#graphPanel'); if(!panel) return;
+  if(!node){ panel.innerHTML='<div class="gp-empty muted">Click a node to see its details, relations and where each fact came from.</div>'; return; }
+  const raw=node.raw||{};
+  const mentions=raw.mentions||[];
+  const rels=(edges||[]).filter(e=>e.s.id===node.id||e.t.id===node.id);
+  const col=NODE_COLORS[node.type]||'#8b94a7';
+
+  let html=`<div class="gp-head">
+    <span class="gp-badge" style="background:${col}22;color:${col};border-color:${col}55">${esc(TYPE_LABELS[node.type]||node.type)}</span>
+    <h4>${esc(node.label)}</h4>
+    <div class="muted">${node.degree} connection${node.degree===1?'':'s'}</div>
+  </div>`;
+
+  html+='<div class="gp-section"><h5>Relations</h5>';
+  if(!rels.length){
+    html+='<div class="muted">No recorded relations yet.</div>';
+  } else {
+    html+='<div class="gp-rels">'+rels.map((e,i)=>{
+      const outgoing=e.s.id===node.id;
+      const other=outgoing?e.t:e.s;
+      const evid=(e.raw&&e.raw.evidence)||[];
+      return `<div class="gp-rel" data-jump="${esc(other.id)}">
+        <div class="gp-rel-row">
+          <span class="gp-arrow">${outgoing?'→':'←'}</span>
+          <span class="gp-rel-label">${esc(e.label||'related')}</span>
+          <span class="gp-rel-other">${esc(other.label)}</span>
+          ${evid.length?`<button type="button" class="gp-evid-btn" data-evid="gr${i}" title="Show evidence">🔎 ${evid.length}</button>`:''}
+        </div>
+        ${evid.length?`<div class="gp-evid hidden" id="gr${i}">${evid.map(ev=>
+          `<div class="gp-quote">"${esc(ev.text)}"<span class="gp-meta">${SOURCE_LABELS[ev.source]||esc(ev.source||'')} · ${esc(ev.ts||'')}</span></div>`
+        ).join('')}</div>`:''}
+      </div>`;
+    }).join('')+'</div>';
+  }
+  html+='</div>';
+
+  html+='<div class="gp-section"><h5>Mentioned in</h5>';
+  if(!mentions.length){
+    html+='<div class="muted">No recorded mentions for this entity yet.</div>';
+  } else {
+    html+='<div class="gp-mentions">'+mentions.slice().reverse().map(m=>
+      `<div class="gp-quote">"${esc(m.text)}"<span class="gp-meta">${SOURCE_LABELS[m.source]||esc(m.source||'')} · ${esc(m.ts||'')}</span></div>`
+    ).join('')+'</div>';
+  }
+  html+='</div>';
+
+  panel.innerHTML=html;
+  panel.querySelectorAll('.gp-rel').forEach(row=>{
+    row.addEventListener('click',ev=>{
+      if(ev.target.closest('.gp-evid-btn')) return;
+      if(graphApi) graphApi.focusById(row.dataset.jump);
+    });
+  });
+  panel.querySelectorAll('.gp-evid-btn').forEach(btn=>{
+    btn.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      const box=document.getElementById(btn.dataset.evid);
+      if(box) box.classList.toggle('hidden');
+    });
+  });
+}
+
+/* ---------------- knowledge graph: toolbar bindings (bound once) ---------------- */
+$('#graphSearch').addEventListener('input',e=>{ if(graphApi) graphApi.focusByLabel(e.target.value.trim()); });
+$('#graphFit').onclick=()=>{ if(graphApi) graphApi.fit(); };
+$$('#graphLegend .lg-chip').forEach(chip=>{
+  chip.onclick=()=>{
+    chip.classList.toggle('active');
+    const hide=!chip.classList.contains('active');
+    chip.dataset.type.split(',').forEach(t=>{ if(graphApi) graphApi.setHidden(t,hide); });
+  };
+});
 
 /* ---------------- voice call ---------------- */
 let recog=null, recording=false, transcript=[], curRole='Lawyer';
