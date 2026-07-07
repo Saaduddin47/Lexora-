@@ -124,14 +124,31 @@
     <!-- GRAPH -->
     <section class="view" id="view-graph">
       <div class="view-head">Knowledge Graph <span id="graphClient" class="muted"></span></div>
-      <div id="graph" class="graph-canvas"></div>
-      <div class="graph-legend">
-        <span><i class="lg client"></i>Client</span>
-        <span><i class="lg person"></i>Person</span>
-        <span><i class="lg place"></i>Place</span>
-        <span><i class="lg date"></i>Date</span>
-        <span><i class="lg event"></i>Event</span>
-        <span><i class="lg claim"></i>Claim</span>
+      <div class="graph-toolbar">
+        <div class="graph-search-wrap">
+          <input id="graphSearch" type="text" placeholder="Search entities…">
+        </div>
+        <div class="graph-legend" id="graphLegend">
+          <button class="lg-chip active" data-type="client"><i class="lg client"></i>Client</button>
+          <button class="lg-chip active" data-type="person"><i class="lg person"></i>Person</button>
+          <button class="lg-chip active" data-type="place"><i class="lg place"></i>Place</button>
+          <button class="lg-chip active" data-type="date"><i class="lg date"></i>Date</button>
+          <button class="lg-chip active" data-type="event"><i class="lg event"></i>Event</button>
+          <button class="lg-chip active" data-type="organization"><i class="lg organization"></i>Org</button>
+          <button class="lg-chip active" data-type="claim"><i class="lg claim"></i>Claim</button>
+          <button class="lg-chip active" data-type="object,entity"><i class="lg object"></i>Other</button>
+        </div>
+        <button id="graphFit" class="ghost-btn graph-fit-btn" title="Fit graph to view">⤢ Fit</button>
+      </div>
+      <div class="graph-body">
+        <div class="graph-main">
+          <div id="graph" class="graph-canvas"></div>
+          <div id="graphTooltip" class="graph-tooltip hidden"></div>
+          <div id="graphStats" class="graph-stats"></div>
+        </div>
+        <aside id="graphPanel" class="graph-panel">
+          <div class="gp-empty muted">Click a node to see its details, relations and where each fact came from.</div>
+        </aside>
       </div>
     </section>
 
@@ -277,6 +294,6 @@
 
 <div id="toasts"></div>
 
-<script src="/static/app.js?v=11"></script>
+<script src="/static/app.js?v=12"></script>
 </body>
 </html>
