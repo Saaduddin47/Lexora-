@@ -12,6 +12,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# MS Office temporary lock files
+~$*
+
 # Editor folders
 .vscode/
 .idea/
