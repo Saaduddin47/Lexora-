@@ -1,12 +1,12 @@
 # Lexora
 
-Lexora is an offline‑first AI assistant for lawyers. It runs locally using an on‑device
+Lexora is an Offline‑first AI assistant for lawyers. It runs locally using an on‑device
 LLM and local embeddings to provide concise legal chat replies, persistent per‑client
 factual memory, an extractive knowledge graph, PDF retrieval (offline RAG), and
 voice/call summarisation. Data and vector indexes are stored on disk so the app
 works without internet; an optional remote LLM fallback is available if you set a key.
 
-Quick start:
+Quick start: 
 
 1. Install dependencies: `py -3.11 -m pip install -r requirements.txt`
 2. (Optional) Seed demo data: `py -3.11 seed_data.py --reset`
