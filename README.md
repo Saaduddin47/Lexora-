@@ -403,18 +403,6 @@ Lexora provides a REST API accessible via FastAPI:
 
 ---
 
-## 👥 Project Credits & Acknowledgements
-
-- **Lead Developer & Research Author:** **Taabish Ahmed Ansari**
-- **Institution:** Department of Computer Science & Engineering, Faculty of Science & Technology, **IFHE University (IcfaiTech)**
-- **Supervision & Mentorship:** Faculty Supervisors & Mentors at IcfaiTech
-- **Open-Source Foundations:**
-  - [Hugging Face Transformers](https://github.com/huggingface/transformers) & [TinyLlama](https://github.com/jzhang38/TinyLlama)
-  - [Sentence-Transformers](https://www.sbert.net/)
-  - [FastAPI](https://fastapi.tiangolo.com/) & [Uvicorn](https://www.uvicorn.org/)
-  - [Chart.js](https://www.chartjs.org/)
-
----
 
 <p align="center">
   <em>Developed with pride for secure, offline, and trustworthy legal computing.</em>
